@@ -4,10 +4,8 @@
 #include <stdio.h>
 #pragma comment(lib, "ws2_32")
 using namespace std;
-using int32 = __int32;
 
 #define HOST "127.0.0.1"
-//#define HOST "192.168.137.1"
 #define PORT 65456
 #define BufferSize 1024
 
@@ -16,6 +14,7 @@ int main()
 	WSADATA wsaData = { 0, }; //Socket 초기화 정보를 저장하기 위한 구조체
 	SOCKET ClientSocket = NULL;
 	SOCKADDR_IN ServerAddr = { 0, };
+	char RecvData[BufferSize] = { 0, };
 
 	WSAStartup(MAKEWORD(2, 2), &wsaData);
 
@@ -30,25 +29,15 @@ int main()
 
 	while (true)
 	{
-		/*char sendMsg[BufferSize];
+		char SendMsg[BufferSize];
 		cout << "> ";
-		cin >> sendMsg;
-		send(ClientSocket, sendMsg, sizeof(sendMsg), 0);
+		cin >> SendMsg;
 
-		char recvData[BufferSize];
-		recv(ClientSocket, recvData, BufferSize, 0);
-		cout << "> received: : " << recvData << endl;
+		send(ClientSocket, SendMsg, sizeof(SendMsg), 0);
+		recv(ClientSocket, RecvData, sizeof(RecvData), 0);
+		cout << "> received: " << RecvData << endl;
 
-		if (strcmp(sendMsg, "quit") == 0)
-			break;*/
-		char sendMsg[100];
-		cout << "> ";
-		cin >> sendMsg;
-		int32 resultCode = ::send(ClientSocket, sendMsg, sizeof(sendMsg), 0);
-		char recvData[1000];
-		int32 recvLen = ::recv(ClientSocket, recvData, sizeof(recvData), 0);
-		cout << "> received: " << recvData << endl;
-		if (!strncmp(sendMsg, "quit", sizeof("quit"))) break;
+		if (strcmp(RecvData, "quit") == 0) break;
 	}
 
 	closesocket(ClientSocket);
