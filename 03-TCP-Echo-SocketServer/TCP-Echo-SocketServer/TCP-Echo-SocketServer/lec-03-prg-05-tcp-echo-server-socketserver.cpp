@@ -68,6 +68,7 @@ int main()
 			return 0;
 		}
 	}
+	cout << "> echo-server is activated" << endl;
 
 	memset(&ClientAddr, 0, sizeof(ClientAddr));
 	ClientSize = sizeof(ClientAddr);
@@ -77,7 +78,6 @@ int main()
 	inet_ntop(AF_INET, &ClientAddr.sin_addr, IpAddress, sizeof(IpAddress));
 	cout << "> client connected by IP address " << IpAddress << " with Port number " << ntohs(ServerAddr.sin_port) << endl;
 
-	cout << "> echo-server is activated" << endl;
 
 	while (ClientSocket != INVALID_SOCKET)
 	{
