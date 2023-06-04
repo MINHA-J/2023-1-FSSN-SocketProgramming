@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\06-UDP-Echo-Multithread\UDP-Echo-Multithread\09-UDP-Echo-Client-Multithread\lec-03-prg-09-udp-echo-client-multithread.cpp">
+    <ClCompile Include="lec-03-prg-11-udp-echo-client.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
