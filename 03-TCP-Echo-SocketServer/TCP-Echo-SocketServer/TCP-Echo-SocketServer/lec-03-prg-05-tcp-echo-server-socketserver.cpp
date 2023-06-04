@@ -20,9 +20,7 @@ void SocketHandle(SOCKET Server, SOCKET Client, SOCKADDR_IN ClientAddr)
 
 		if (strcmp(RecvData, "quit") == 0)
 		{
-			closesocket(Client);
-
-			Client = accept(Server, (SOCKADDR*)&Client, &(ClientSize));
+			Client = accept(Server, (SOCKADDR*)&ClientAddr, &(ClientSize));
 			char IpAddress[16];
 			inet_ntop(AF_INET, &ClientAddr.sin_addr, IpAddress, sizeof(IpAddress));
 			cout << "> client connected by IP address " << IpAddress << " with Port number " << ntohs(ClientAddr.sin_port) << endl;
@@ -33,7 +31,7 @@ void SocketHandle(SOCKET Server, SOCKET Client, SOCKADDR_IN ClientAddr)
 int main()
 {
 	WSADATA wsaData = { 0, }; //Socket 초기화 정보를 저장하기 위한 구조체
-	SOCKET ServerSocket = NULL;
+	SOCKET ServerSocket = NULL, ClientSocket = NULL;
 	SOCKADDR_IN ServerAddr = { 0, };
 	SOCKADDR_IN ClientAddr = { 0, };
 	int ClientSize = 0;
@@ -73,21 +71,22 @@ int main()
 
 	memset(&ClientAddr, 0, sizeof(ClientAddr));
 	ClientSize = sizeof(ClientAddr);
-	SOCKET ClientSocket = accept(ServerSocket, (SOCKADDR*)&ClientAddr, &ClientSize);
+	ClientSocket = accept(ServerSocket, (SOCKADDR*)&ClientAddr, &ClientSize);
 
 	char IpAddress[16];
 	inet_ntop(AF_INET, &ClientAddr.sin_addr, IpAddress, sizeof(IpAddress));
-	cout << "> echo-server is activated" << endl;
 	cout << "> client connected by IP address " << IpAddress << " with Port number " << ntohs(ServerAddr.sin_port) << endl;
 
-	while (1)
+	cout << "> echo-server is activated" << endl;
+
+	while (ClientSocket != INVALID_SOCKET)
 	{
 		SocketHandle(ServerSocket, ClientSocket, ClientAddr);
 	}
 
-	closesocket(ClientSocket);
 	closesocket(ServerSocket);
 	WSACleanup();
+	system("pause");
 
 	std::cout << "> echo-server is de-activated" << std::endl;
 

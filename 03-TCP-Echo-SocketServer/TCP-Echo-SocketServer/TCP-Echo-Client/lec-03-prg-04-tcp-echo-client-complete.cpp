@@ -14,7 +14,6 @@ int main()
 	WSADATA wsaData = { 0, }; //Socket 초기화 정보를 저장하기 위한 구조체
 	SOCKET ClientSocket = NULL;
 	SOCKADDR_IN ServerAddr = { 0, };
-	char RecvData[BufferSize] = { 0, };
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData)) return 0;
 
@@ -46,11 +45,13 @@ int main()
 
 	while (true)
 	{
-		char SendMsg[BufferSize];
+		char SendMsg[BufferSize] = {};
 		cout << "> ";
 		cin >> SendMsg;
 
 		send(ClientSocket, SendMsg, sizeof(SendMsg), 0);
+
+		char RecvData[BufferSize] = { };
 		recv(ClientSocket, RecvData, sizeof(RecvData), 0);
 		cout << "> received: " << RecvData << endl;
 
@@ -59,6 +60,7 @@ int main()
 
 	closesocket(ClientSocket);
 	WSACleanup();
+	system("pause");
 
 	cout << "> echo-client is de-activated" << endl;
 
