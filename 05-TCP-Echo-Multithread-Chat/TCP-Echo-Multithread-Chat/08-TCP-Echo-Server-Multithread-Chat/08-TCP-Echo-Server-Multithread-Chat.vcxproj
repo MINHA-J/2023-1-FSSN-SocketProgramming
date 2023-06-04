@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="lec-03-prg-08-tcp-echo-server-multithread-chat.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Socket.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

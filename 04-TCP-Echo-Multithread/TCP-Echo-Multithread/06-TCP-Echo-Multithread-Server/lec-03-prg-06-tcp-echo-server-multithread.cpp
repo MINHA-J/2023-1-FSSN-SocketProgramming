@@ -27,10 +27,10 @@ int main()
 	char RecvData[BufferSize] = { 0, };
 	int ClientSize = 0;
 
-	if (::WSAStartup(MAKEWORD(2, 2), &wsaData))
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData))
 		return 0;
 
-	ServerSocket = ::socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	ServerSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (ServerSocket == INVALID_SOCKET) return 0;
 
 	memset(&ServerAddr, 0, sizeof(ServerAddr));
@@ -98,7 +98,7 @@ void ReceiveData(SOCKET clientSocket, int number)
 
 	while (flag)
 	{
-		int32 recvLen = recv(clientSocket, RecvData, sizeof(RecvData), 0);
+		int recvLen = recv(clientSocket, RecvData, sizeof(RecvData), 0);
 		if (recvLen == SOCKET_ERROR || recvLen == 0) break;
 		if (strcmp(RecvData, "quit") == 0)
 		{
@@ -127,7 +127,7 @@ void AcceptClients(SOCKET listenSocket, SOCKADDR_IN* serverAddr)
 	while (flag)
 	{
 		socketVector.push_back(Socket());
-		socketVector[number].SetClientSocket(::accept(listenSocket, (SOCKADDR*)&socketVector[number].GetClientAddr(), &socketVector[number].GetClientSize()));
+		socketVector[number].SetClientSocket(accept(listenSocket, (SOCKADDR*)&socketVector[number].GetClientAddr(), &socketVector[number].GetClientSize()));
 
 		if (socketVector[number].GetClientSocket() == INVALID_SOCKET)
 		{
@@ -142,7 +142,7 @@ void AcceptClients(SOCKET listenSocket, SOCKADDR_IN* serverAddr)
 
 		char ipAddress[16];
 		inet_ntop(AF_INET, &socketVector[number].GetClientAddr().sin_addr, ipAddress, sizeof(ipAddress));
-		cout << "> client connected by IP address " << ipAddress << " with Port number " << ::ntohs((*serverAddr).sin_port) << endl;
+		cout << "> client connected by IP address " << ipAddress << " with Port number " << ntohs((*serverAddr).sin_port) << endl;
 
 		thread(ReceiveData, socketVector[number].GetClientSocket(), socketVector[number].GetNumber()).detach();
 
