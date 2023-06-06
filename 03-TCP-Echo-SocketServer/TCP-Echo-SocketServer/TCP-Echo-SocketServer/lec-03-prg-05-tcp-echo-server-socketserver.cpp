@@ -88,7 +88,7 @@ int main()
 	WSACleanup();
 	system("pause");
 
-	std::cout << "> echo-server is de-activated" << std::endl;
+	cout << "> echo-server is de-activated" << endl;
 
 	return 0;
 }

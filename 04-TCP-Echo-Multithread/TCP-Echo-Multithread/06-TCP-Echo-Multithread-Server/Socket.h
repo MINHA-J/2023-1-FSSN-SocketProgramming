@@ -24,14 +24,14 @@ public:
 	Socket()
 	{
 		memset(&clientSocket, 0, sizeof(clientSocket));
-		::memset(&clientAddress, 0, sizeof(clientAddress));
+		memset(&clientAddress, 0, sizeof(clientAddress));
 		clientSize = sizeof(clientAddress);
 		number = 0;
 	}
 	~Socket()
 	{
-		::memset(&clientSocket, 0, sizeof(clientSocket));
-		::memset(&clientAddress, 0, sizeof(clientAddress));
+		memset(&clientSocket, 0, sizeof(clientSocket));
+		memset(&clientAddress, 0, sizeof(clientAddress));
 		clientSize = -1;
 		number = -1;
 	}

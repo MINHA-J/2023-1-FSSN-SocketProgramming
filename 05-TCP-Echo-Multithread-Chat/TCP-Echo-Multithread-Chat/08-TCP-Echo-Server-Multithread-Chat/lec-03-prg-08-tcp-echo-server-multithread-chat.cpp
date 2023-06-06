@@ -13,13 +13,13 @@ using namespace std;
 #define BufferSize 1024
 
 vector<Socket> socketVector;
-bool flag = true;
+bool IsActive = true;
 
 void ReceiveData(SOCKET clientSocket, int number)
 {
 	char RecvData[BufferSize] = { 0, };
 
-	while (flag)
+	while (IsActive)
 	{
 		int recvLen = recv(clientSocket, RecvData, sizeof(RecvData), 0);
 		
@@ -32,7 +32,7 @@ void ReceiveData(SOCKET clientSocket, int number)
 			continue;
 		}
 
-		while (flag)
+		while (IsActive)
 		{
 			cout << "> received ( " << RecvData << " ) and echoed to " << Socket::GetClientNumber() - 1 << " threads" << endl;
 			for (int i = 0; i < Socket::GetClientNumber() - 1; ++i)
@@ -50,7 +50,7 @@ void AcceptClients(SOCKET listenSocket, SOCKADDR_IN* serverAddr)
 {
 	int number = 0;
 
-	while (flag)
+	while (IsActive)
 	{
 		socketVector.push_back(Socket());
 		socketVector[number].SetClientSocket(accept(listenSocket, (SOCKADDR*)&socketVector[number].GetClientAddr(), &socketVector[number].GetClientSize()));
@@ -129,14 +129,14 @@ int main()
 	thread(AcceptClients, ServerSocket, &ServerAddr).detach();
 	
 	char command[15];
-	while (flag)
+	while (IsActive)
 	{
 		cin >> command;
 		if (!strncmp(command, "quit", sizeof("quit")))
 		{
 			if (Socket::GetClientNumber() == 1)
 			{
-				flag = false;
+				IsActive = false;
 				break;
 			}
 			else
